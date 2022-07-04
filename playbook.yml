@@ -5,5 +5,6 @@
         pkg:
         - python3
         - virtualenv
+        update_cache: yes
     become: yes
-    
+

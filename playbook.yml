@@ -14,4 +14,7 @@
         name:
             - django
             - djangorestframework
+  - name: Iniciando VENV projeto 
+    shell: '. /home/ubuntu/projeto/venv/bin/activate; django-admin startproject setup /home/ubuntu/projeto/'
+
 

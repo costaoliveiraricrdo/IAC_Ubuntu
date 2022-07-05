@@ -27,8 +27,8 @@
         backrefs: yes
 
   - name: Starting Django Webserver 
-    shell: '. /home/ubuntu/projeto/venv/bin/activate; python manage.py runserver 0.0.0.0:8000'
-    
+    shell: '. /home/ubuntu/projeto/venv/bin/activate; python /home/ubuntu/projeto/manage.py runserver 0.0.0.0:8000'
+
 
 
 

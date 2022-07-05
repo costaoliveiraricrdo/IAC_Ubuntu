@@ -8,13 +8,23 @@
         - nodejs
         update_cache: yes
     become: yes
+  
   - name: Instalando dependencias com pip (Django e Django Rest)
     pip:
         virtualenv: /home/ubuntu/projeto/venv
         name:
             - django
             - djangorestframework
+  
   - name: Iniciando VENV projeto 
     shell: '. /home/ubuntu/projeto/venv/bin/activate; django-admin startproject setup /home/ubuntu/projeto/'
+  
+  - name: Alterando hosts do arquivo Settings.py
+    lineinfile:
+        path: /home/ubuntu/projeto/setup/settings.py
+        regexp: 'ALLOWED_HOSTS'
+        line: 'ALLOWED_HOSTS = ["*"]'
+        backrefs: yes
+        
 
 

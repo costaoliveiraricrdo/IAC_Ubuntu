@@ -1,10 +1,11 @@
 - hosts: terraform-ansible
   tasks:
-  - name: Install Python3 and Virtualenv
+  - name: Install Python3, Virtualenv, NodeJS
     apt:
         pkg:
         - python3
         - virtualenv
+        - nodejs
         update_cache: yes
     become: yes
 

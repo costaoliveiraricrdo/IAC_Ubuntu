@@ -24,7 +24,7 @@ resource "aws_instance" "Web_Server" {
     "sg-08812bf19eddffd8c"
   ]
   tags = {
-    Name = var.nome_host
+    Name = var.nome_instancia
   }
 }
 

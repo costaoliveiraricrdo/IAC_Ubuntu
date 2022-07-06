@@ -9,3 +9,7 @@ variable "chave" {
 variable "instancia" {
     type = string
 }
+
+variable "nome_instancia" {
+    type = string
+}

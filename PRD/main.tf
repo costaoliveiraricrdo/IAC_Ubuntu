@@ -3,6 +3,6 @@ module "aws-prd" {
     instancia = "t2.small"
     regiao_aws = "us-east-2"
     chave = "IaC-PRD"
-    nome_host = "PRD_Web_Server_01"
+    nome_instancia = "PRD_Web_Server_01"
 }
 

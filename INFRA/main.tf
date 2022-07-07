@@ -29,7 +29,7 @@ resource "aws_instance" "Web_Server" {
 }
 
 resource "aws_key_pair" "chaveSSH" {
-  key_name = var.chave
+  key_name   = var.chave
   public_key = file("${var.chave}.pub")
 
 }

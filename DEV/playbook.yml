@@ -1,4 +1,4 @@
-- hosts: terraform-ansible
+- hosts: DEV-terraform-ansible
   tasks:
   - name: Install Python3, Virtualenv, NodeJS
     apt:
@@ -8,7 +8,7 @@
         - nodejs
         update_cache: yes
     become: yes
-  
+      
   - name: Instalando dependencias com pip (Django e Django Rest)
     pip:
         virtualenv: /home/ubuntu/projeto/venv

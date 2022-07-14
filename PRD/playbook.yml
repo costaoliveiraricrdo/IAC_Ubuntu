@@ -1,4 +1,4 @@
-- hosts: terraform-ansible
+- hosts: PRD-terraform-ansible
   tasks:
   - name: Install Python3, Virtualenv, NodeJS
     apt:

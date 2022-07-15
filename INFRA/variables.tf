@@ -13,3 +13,11 @@ variable "instancia" {
 variable "nome_instancia" {
   type = string
 }
+
+variable "infra_env" {
+  type = string
+}
+
+variable "grupo_seguranca" {
+  type = string
+}

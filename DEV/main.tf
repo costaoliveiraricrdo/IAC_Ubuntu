@@ -5,6 +5,7 @@ module "aws-dev" {
   chave           = "IaC-DEV"
   nome_instancia  = "DEV_Web_Server_01"
   infra_env       = "development-environment"
+  nome_usuario    = "ubuntu"
   grupo_seguranca = module.aws-dev.security_group_public
 }
 
@@ -15,3 +16,4 @@ output "IP" {
 output "SG_public" {
   value = module.aws-dev.security_group_public
 }
+

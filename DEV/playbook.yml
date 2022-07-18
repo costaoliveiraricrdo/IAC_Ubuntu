@@ -1,4 +1,4 @@
-- hosts: DEV-terraform-ansible
+- hosts: all
   tasks:
   - name: Install Python3, Virtualenv, NodeJS
     apt:

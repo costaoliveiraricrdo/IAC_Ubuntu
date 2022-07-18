@@ -15,3 +15,18 @@ output "IP" {
 output "SG_public" {
   value = module.aws-prd.security_group_public
 }
+
+provisioner "remote-exec" {
+  inline  = ["echo 'Wait until SSH is ready...'"]
+
+  connection {
+    type        = "ssh"
+    user        = var.nome_usuario
+    private.key = file(var.chave)
+    host        = aws_instance.web_server.public_ip
+  }
+}
+
+provisioner "local-exec" {
+  command       = "ansible-playbook playbook.yml -i ${aws_instance.web_server.public_ip} --private-key ${var.chave}"
+}

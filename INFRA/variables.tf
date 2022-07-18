@@ -21,3 +21,7 @@ variable "infra_env" {
 variable "grupo_seguranca" {
   type = string
 }
+
+variable "nome_usuario" {
+  type = string
+}

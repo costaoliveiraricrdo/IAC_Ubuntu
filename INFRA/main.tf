@@ -13,16 +13,31 @@ provider "aws" {
   region = var.regiao_aws
 }
 
-resource "aws_instance" "Web_Server" {
+resource "aws_instance" "web_server" {
   ami                    = "ami-08d4ac5b634553e16"
   instance_type          = var.instancia
   key_name               = var.chave
   vpc_security_group_ids = [
     var.grupo_seguranca
   ]
-  
+
   tags = {
     Name = var.nome_instancia
+  }
+
+  provisioner "remote-exec" {
+    inline  = ["echo 'Wait until SSH is ready...'"]
+
+    connection {
+      type        = "ssh"
+      user        = var.nome_usuario
+      private_key = file(var.chave)
+      host        = aws_instance.web_server.public_ip
+    }
+  }
+
+  provisioner "local-exec" {
+    command       = "ansible-playbook ../DEV/playbook.yml -i ${aws_instance.web_server.public_ip} --private-key ${var.chave}"
   }
 }
 
@@ -33,7 +48,7 @@ resource "aws_key_pair" "chaveSSH" {
 }
 
 output "IP_publico" {
-  value = aws_instance.Web_Server.public_ip
+  value = aws_instance.web_server.public_ip
 }
 
 output "security_group_public" {

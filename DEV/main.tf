@@ -6,6 +6,7 @@ module "aws-dev" {
   nome_instancia  = "DEV_Web_Server_01"
   infra_env       = "development-environment"
   nome_usuario    = "ubuntu"
+  ansible_path    = "../DEV/playbook.yml"
   grupo_seguranca = module.aws-dev.security_group_public
 }
 

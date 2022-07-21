@@ -24,6 +24,22 @@ resource "aws_instance" "web_server" {
   tags = {
     Name = var.nome_instancia
   }
+}
+
+resource "aws_key_pair" "chaveSSH" {
+  key_name   = var.chave
+  public_key = file("${var.chave}.pub")
+
+}
+
+resource "local_file" "ip" {
+  content   = aws_instance.web_server.public_ip
+  filename  = "ip.txt" 
+
+  provisioner "file" {
+    source      = "ip.txt"
+    destination = "/home/costa/AWS/IAC_Ubuntu/INFRA/ip.txt" 
+  }
 
   provisioner "remote-exec" {
     inline = ["echo 'Wait until SSH is ready...'"]
@@ -39,12 +55,6 @@ resource "aws_instance" "web_server" {
   provisioner "local-exec" {
     command = "aws --profile default ec2 wait instance-status-ok --region us-east-1 --instance-ids ${self.id} && ansible-playbook ${var.ansible_path} -i ${aws_instance.web_server.public_ip} --private-key ${var.chave}"
   }
-}
-
-resource "aws_key_pair" "chaveSSH" {
-  key_name   = var.chave
-  public_key = file("${var.chave}.pub")
-
 }
 
 output "IP_publico" {

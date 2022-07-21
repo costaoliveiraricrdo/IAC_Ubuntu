@@ -53,7 +53,7 @@ resource "local_file" "ip" {
 
   provisioner "file" {
     source      = "ip.txt"
-    destination = "/home/costa/AWS/IAC_Ubuntu/INFRA/ip.txt" 
+    destination = "/home/costa/AWS/IAC_Ubuntu/DEV/ip.txt" 
   }
 
   provisioner "local-exec" {

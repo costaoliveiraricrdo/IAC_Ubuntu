@@ -14,9 +14,9 @@ provider "aws" {
 }
 
 resource "aws_instance" "web_server" {
-  ami                    = "ami-08d4ac5b634553e16"
-  instance_type          = var.instancia
-  key_name               = var.chave
+  ami           = "ami-08d4ac5b634553e16"
+  instance_type = var.instancia
+  key_name      = var.chave
   vpc_security_group_ids = [
     var.grupo_seguranca
   ]
@@ -26,7 +26,7 @@ resource "aws_instance" "web_server" {
   }
 
   provisioner "remote-exec" {
-    inline  = ["echo 'Wait until SSH is ready...'"]
+    inline = ["echo 'Wait until SSH is ready...'"]
 
     connection {
       type        = "ssh"
@@ -37,7 +37,7 @@ resource "aws_instance" "web_server" {
   }
 
   provisioner "local-exec" {
-    command       = "ansible-playbook ../DEV/playbook.yml -i ${aws_instance.web_server.public_ip} --private-key ${var.chave}"
+    command = "aws --profile default ec2 wait instance-status-ok --region us-east-1 --instance-ids ${self.id} && ansible-playbook ${var.ansible_path} -i ${aws_instance.web_server.public_ip} --private-key ${var.chave}"
   }
 }
 

@@ -25,3 +25,7 @@ variable "grupo_seguranca" {
 variable "nome_usuario" {
   type = string
 }
+
+variable "ansible_path" {
+  type = string
+}

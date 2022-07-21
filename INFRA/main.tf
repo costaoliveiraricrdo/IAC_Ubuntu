@@ -24,6 +24,21 @@ resource "aws_instance" "web_server" {
   tags = {
     Name = var.nome_instancia
   }
+
+  provisioner "remote-exec" {
+    inline = ["echo 'Wait until SSH is ready...'"]
+
+    connection {
+      type        = "ssh"
+      user        = var.nome_usuario
+      private_key = file(var.chave)
+      host        = aws_instance.web_server.public_ip
+    }
+  }
+
+  provisioner "local-exec" {
+    command = "aws --profile default ec2 wait instance-status-ok --region us-east-1 --instance-ids ${self.id}"
+  }
 }
 
 resource "aws_key_pair" "chaveSSH" {
@@ -39,17 +54,6 @@ resource "local_file" "ip" {
   provisioner "file" {
     source      = "ip.txt"
     destination = "/home/costa/AWS/IAC_Ubuntu/INFRA/ip.txt" 
-  }
-
-  provisioner "remote-exec" {
-    inline = ["echo 'Wait until SSH is ready...'"]
-
-    connection {
-      type        = "ssh"
-      user        = var.nome_usuario
-      private_key = file(var.chave)
-      host        = aws_instance.web_server.public_ip
-    }
   }
 
   provisioner "local-exec" {

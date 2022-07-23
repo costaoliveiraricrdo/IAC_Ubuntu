@@ -2,6 +2,10 @@ variable "regiao_aws" {
   type = string
 }
 
+variable "ami" {
+  type = string
+}
+
 variable "chave" {
   type = string
 }

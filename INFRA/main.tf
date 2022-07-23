@@ -10,40 +10,46 @@ terraform {
 }
 
 provider "aws" {
-  region = var.regiao_aws
-}
-
-resource "aws_instance" "web_server" {
-  ami           = "ami-08d4ac5b634553e16"
-  instance_type = var.instancia
-  key_name      = var.chave
-  vpc_security_group_ids = [
-    var.grupo_seguranca
-  ]
-
-  tags = {
-    Name = var.nome_instancia
-  }
+  region = "${var.regiao_aws}"
 }
 
 resource "aws_key_pair" "chaveSSH" {
-  key_name   = var.chave
+  key_name   = "${var.chave}"
   public_key = file("${var.chave}.pub")
+}
 
+resource "aws_instance" "web_server" {
+  ami           = "${var.ami}"
+  instance_type = "${var.instancia}"
+  key_name      = "${var.chave}"
+  vpc_security_group_ids = [
+    "${var.grupo_seguranca}"
+  ]
+
+  tags = {
+    Name = "${var.nome_instancia}"
+  }
 }
 
 resource "local_file" "ip" {
+  connection {
+    type        = "ssh"
+    user        = "${var.nome_usuario}"
+    private_key = file("${var.chave}")
+    host        = aws_instance.web_server.public_ip
+  }
+  
   content   = aws_instance.web_server.public_ip
   filename  = "ip.txt" 
 }
 
 resource "null_resource" "nullremote1" {
-  #depends_on = [aws_instance.web_server]
+  depends_on = [aws_instance.web_server]
     
   connection {
       type        = "ssh"
-      user        = var.nome_usuario
-      private_key = file(var.chave)
+      user        = "${var.nome_usuario}"
+      private_key = file("${var.chave}")
       host        = aws_instance.web_server.public_ip
     }
   provisioner "file" {
@@ -55,15 +61,15 @@ resource "null_resource" "nullremote1" {
 resource "null_resource" "nullremote2" {
   depends_on = [aws_instance.web_server]
     
-    provisioner "local-exec" {
+  connection {
+    type        = "ssh"
+    user        = "${var.nome_usuario}"
+    private_key = file("${var.chave}")
+    host        = aws_instance.web_server.public_ip
+  } 
+
+  provisioner "remote-exec" {
     command = "aws --profile default ec2 wait instance-status-ok --region us-east-1 --instance-ids ${self.id} && ansible-playbook ${var.ansible_path} -i ${aws_instance.web_server.public_ip} --private-key ${var.chave}"
-  
-    connection {
-      type        = "ssh"
-      user        = var.nome_usuario
-      private_key = file(var.chave)
-      host        = aws_instance.web_server.public_ip
-    }
   }
 }
 
